@@ -2,7 +2,7 @@
 # See https://docs.cocotb.org/en/stable/quickstart.html for more info
 
 # List your source files here:
-SOURCE_FILES = project.vhdl
+SOURCE_FILES = project.vhdl memory.vhdl
 
 # Toplevel name of your VHDL project
 COCOTB_TOPLEVEL = tt_um_example
