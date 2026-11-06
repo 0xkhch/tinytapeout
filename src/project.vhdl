@@ -16,9 +16,26 @@ entity tt_um_example is
 end tt_um_example;
 
 architecture Behavioral of tt_um_example is
+    component memory
+        port ( 
+            reset : in std_logic;
+            clk: in std_logic;
+            we : in std_logic;
+            addr : in std_logic_vector(7 downto 0);
+            data : in std_logic_vector(7 downto 0);
+            data_out : out std_logic_vector(7 downto 0)
+        );
+    end component memory;
 begin
-
-    uo_out <= std_logic_vector(unsigned(ui_in) + unsigned(uio_in));
+    mem : memory port map(
+        reset => rst_n,
+        clk => clk,
+        we => ena,
+        addr => ui_in,
+        data => uio_in,
+        data_out => uo_out
+    );
+    -- uo_out <= std_logic_vector(unsigned(ui_in) + unsigned(uio_in));
     uio_out <= "00000000";
     uio_oe <= "00000000";
 
