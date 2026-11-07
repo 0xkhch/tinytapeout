@@ -23,13 +23,16 @@ architecture Behavioral of tt_um_example is
             tile_x : out unsigned(4 downto 0);
             tile_y : out unsigned(3 downto 0);
             hsync : out std_logic;
-            vsync : out std_logic
+            vsync : out std_logic;
+            hpos : out unsigned(9 downto 0);
+            vpos : out unsigned(9 downto 0)
         );
     end component;
     signal hsync, vsync : std_logic;
     signal r, g, b : std_logic_vector(1 downto 0);
     signal tile_x : unsigned(4 downto 0);
     signal tile_y : unsigned(3 downto 0);
+    signal hpos, vpos : unsigned(9 downto 0);
 begin
     display : vga port map(
         clk => clk,
@@ -37,7 +40,9 @@ begin
         tile_x => tile_x,
         tile_y => tile_y,
         hsync => hsync,
-        vsync => vsync
+        vsync => vsync,
+        hpos => hpos,
+        vpos => vpos
     );
     uo_out <= hsync & b(0) & g(0) & r(0) & vsync & b(1) & g(1) & r(1);
     uio_oe <= "00000000";
