@@ -1,6 +1,6 @@
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity tt_um_example is
     port (
@@ -16,27 +16,27 @@ entity tt_um_example is
 end tt_um_example;
 
 architecture Behavioral of tt_um_example is
-    component memory
-        port ( 
-            reset : in std_logic;
-            clk: in std_logic;
-            we : in std_logic;
-            addr : in std_logic_vector(7 downto 0);
-            data : in std_logic_vector(7 downto 0);
-            data_out : out std_logic_vector(7 downto 0)
-        );
-    end component memory;
-begin
-    mem : memory port map(
-        reset => rst_n,
-        clk => clk,
-        we => ena,
-        addr => ui_in,
-        data => uio_in,
-        data_out => uo_out
+    component vga is
+    port (
+        clk    : in  std_logic;
+        rst_n  : in  std_logic;
+        idx  : in  std_logic_vector(3 downto 0);
+        hsync : out std_logic;
+        vsync : out std_logic;
+        r, g, b : out std_logic_vector(1 downto 0)
     );
-    -- uo_out <= std_logic_vector(unsigned(ui_in) + unsigned(uio_in));
-    uio_out <= "00000000";
+    end component;
+    signal hsync, vsync : std_logic;
+    signal r, g, b : std_logic_vector(1 downto 0);
+begin
+    display : vga port map(
+        clk => clk,
+        rst_n => rst_n,
+        idx => "0000",
+        hsync => hsync,
+        vsync => vsync,
+        r => r, g => g, b => b
+    );
+    uo_out <= hsync & b(0) & g(0) & r(0) & vsync & b(1) & g(1) & r(1);
     uio_oe <= "00000000";
-
 end Behavioral;
