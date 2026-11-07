@@ -2,20 +2,12 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
--- TinyTapeout-pinout VGA checkerboard demo.
--- A clean intro to VGA: just hsync/vsync timing and a 1-bit pattern from
--- two position bits XOR-ed together.
---
--- ui_in[2:0] : sets the dark-square colour (RGB bits)
--- ui_in[5:4] : square size: 00=32px, 01=64px, 10=128px, 11=16px
---
--- Inspired by the classic "your first VGA design" pattern from fpga4fun
--- and Nandland's VGA tutorial.
 entity vga is
     port (
         clk : in std_logic;
         rst_n : in std_logic;
-        idx : out std_logic_vector(3 downto 0);
+        tile_x : out unsigned(4 downto 0);
+        tile_y : out unsigned(3 downto 0);
         hsync : out std_logic;
         vsync : out std_logic
     );
@@ -43,7 +35,8 @@ begin
             end if;
         end if;
     end process;
-
+    tile_x <= hpos(9 downto 5);
+    tile_y <= vpos(9 downto 6);
     hsync <= '0' when hpos < 96 else
              '1';
     vsync <= '0' when vpos < 2 else
